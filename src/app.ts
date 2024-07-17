@@ -1,19 +1,22 @@
-import "express-async-errors";
+import "express-async-errors"
+import "reflect-metadata";
 import express, { json } from "express";
+import { categoryRouter, tasksRouter } from "./routers";
 import helmet from "helmet";
-import { HandleErrors } from "./middlewares/handleErrors.middleware";
-import taskRouter from "./routers/task.routes";
-import categoryRouter from "./routers/category.routes";
-import userRouter from "./routers/user.routes";
+import { handleErrors } from "./middlewares";
+import { userRouter } from "./routers/user.router";
+import { sessionRouter } from "./routers/session.router";
+let cors = require("cors") 
 
 export const app = express();
 
 app.use(helmet());
-
 app.use(json());
+app.use(cors());
 
-app.use("/tasks", taskRouter);
+app.use("/tasks", tasksRouter);
 app.use("/categories", categoryRouter);
-app.use("/users", userRouter)
+app.use("/users", userRouter);
+app.use("/users", sessionRouter);
 
-app.use(HandleErrors.execute);
+app.use(handleErrors);
